@@ -1,7 +1,9 @@
 import { isNodeProcess } from 'is-node-process'
+import pDefer from 'p-defer'
 import type { DecoratorFunction, StoryContext } from '@storybook/addons'
 import type { SetupWorkerApi, RequestHandler } from 'msw'
 import type { SetupServerApi } from 'msw/node'
+import type { DeferredPromise } from 'p-defer';
 
 export type SetupApi = SetupWorkerApi | SetupServerApi
 export type InitializeOptions =
@@ -20,12 +22,13 @@ export interface DecoratorContext extends StoryContext {
 
 const IS_BROWSER = !isNodeProcess()
 let api: SetupApi
+const mswInitDefer = pDefer<SetupWorkerApi | SetupServerApi>();
 
 export function initialize(options?: InitializeOptions): SetupApi {
   if (IS_BROWSER) {
     const { setupWorker } = require('msw')
     const worker = setupWorker()
-    worker.start(options)
+    worker.start(options).then(() => mswInitDefer.resolve(worker))
     api = worker
   } else {
     /**
@@ -43,6 +46,7 @@ export function initialize(options?: InitializeOptions): SetupApi {
     const { setupServer } = __non_webpack_require__('msw/node')
     const server = setupServer()
     server.listen(options)
+    mswInitDefer.resolve(server)
     api = server
   }
 
@@ -54,6 +58,16 @@ export function initializeWorker(options?: InitializeOptions): SetupApi {
     `[MSW] "initializeWorker" is now deprecated, please use "initialize" instead. This method will be removed in future releases.`
   )
   return initialize(options)
+}
+
+export function getInitializePromise(): DeferredPromise<SetupWorkerApi | SetupServerApi> {
+  if (mswInitDefer === undefined) {
+    throw new Error(
+      `[MSW] Failed to retrieve the worker: no active worker found. Did you forget to call "initialize"?`
+    )
+  }
+
+  return mswInitDefer
 }
 
 export function getWorker(): SetupApi {

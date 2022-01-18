@@ -34,7 +34,8 @@
   "license": "MIT",
   "dependencies": {
     "@storybook/addons": "^6.0.0",
-    "is-node-process": "^1.0.1"
+    "is-node-process": "^1.0.1",
+    "p-defer": "^4.0.0"
   },
   "devDependencies": {
     "typescript": "^4.5.2"

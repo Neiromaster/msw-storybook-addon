@@ -10716,10 +10716,11 @@ ms@^2.1.1:
   integrity sha512-6FlzubTLZG3J2a/NVCAleEhjzq5oxgHyaCU9yYXvcLsvoVaHJq/s5xXI6/XXP6tz7R9xAOtHnSO/tXtF3WRTlA==
 
 "msw-storybook-addon@link:packages/msw-addon":
-  version "1.4.1"
+  version "1.6.0"
   dependencies:
     "@storybook/addons" "^6.0.0"
     is-node-process "^1.0.1"
+    p-defer "^4.0.0"
 
 msw@^0.35.0:
   version "0.35.0"
@@ -11310,6 +11311,11 @@ p-all@^2.1.0:
   integrity sha512-HbZxz5FONzz/z2gJfk6bFca0BCiSRF8jU3yCsWOen/vR6lZjfPOu/e7L3uFzTW1i0H8TlC3vqQstEJPQL4/uLA==
   dependencies:
     p-map "^2.0.0"
+
+p-defer@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/p-defer/-/p-defer-4.0.0.tgz#8082770aeeb10eb6b408abe91866738741ddd5d2"
+  integrity sha512-Vb3QRvQ0Y5XnF40ZUWW7JfLogicVh/EnA5gBIvKDJoYpeI82+1E3AlB9yOcKFS0AhHrWVnAQO39fbR0G99IVEQ==
 
 p-each-series@^2.1.0:
   version "2.2.0"
